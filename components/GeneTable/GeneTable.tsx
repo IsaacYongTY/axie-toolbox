@@ -8,14 +8,16 @@ import styles from './GeneTable.module.scss';
 
 const cx = classnames.bind(styles);
 
+interface MyAxieGene extends AxieGene {
+    [key: string]: any;
+}
+
 type GeneTableProps = {
     genes: MyAxieGene;
 };
 
-interface MyAxieGene extends AxieGene {
-    [key: string]: any;
-}
-export default function GeneTable({ genes }: GeneTableProps) {
+const GeneTable: React.FC<GeneTableProps> = ({ genes }) => {
+    console.log(genes);
     return (
         <div className={cx('container')}>
             <table className={cx('table')}>
@@ -57,4 +59,6 @@ export default function GeneTable({ genes }: GeneTableProps) {
             </table>
         </div>
     );
-}
+};
+
+export default GeneTable;

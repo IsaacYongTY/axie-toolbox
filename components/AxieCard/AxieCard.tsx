@@ -1,31 +1,33 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import classnames from 'classnames/bind';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import { AxieGene } from 'agp-npm/dist/axie-gene';
 import Image from 'next/image';
 import { Chip } from '@mui/material';
 import { format } from 'date-fns';
+
 import GeneTable from '../GeneTable';
 import { POSTGetAxieDetails } from '../../types';
+import { constructFindSimilarQueries } from './utils';
 
 import styles from './AxieCard.module.scss';
-import {constructFindSimilarQueries} from "./utils";
 
 const cx = classnames.bind(styles);
 
 type AxieCardProps = {
     axieDetails: POSTGetAxieDetails;
     handleSelectToCompare?: (axie: POSTGetAxieDetails) => void;
-    breedPair: POSTGetAxieDetails[];
+    breedPair?: POSTGetAxieDetails[];
 };
 
 const deriveHatchDateTime = (unixTimestamp: number) => {
     const daysInMs = (days: number) => days * 24 * 60 * 60 * 1000;
     return format(
         new Date(unixTimestamp * 1000 + daysInMs(5)),
-        'dd-mm-yyyy h:mm b'
+        'dd-MM-yyyy h:mm b'
     );
 };
+
 const AxieCard: React.FC<AxieCardProps> = ({
     axieDetails,
     handleSelectToCompare,
@@ -37,12 +39,11 @@ const AxieCard: React.FC<AxieCardProps> = ({
         return new AxieGene(geneHex);
     };
 
-
-
     const isSelected = useMemo(
         () =>
-            breedPair.findIndex((selected) => selected.id === axieDetails.id) >
-            -1,
+            breedPair &&
+            breedPair?.findIndex((selected) => selected.id === axieDetails.id) >
+                -1,
         [breedPair]
     );
 
@@ -72,7 +73,7 @@ const AxieCard: React.FC<AxieCardProps> = ({
             )}
             <div>
                 Birth Date:{' '}
-                {format(new Date(axieDetails.birthDate * 1000), 'dd-mm-yyyy')}
+                {format(new Date(axieDetails.birthDate * 1000), 'dd-MM-yyyy')}
             </div>
             {isEgg && (
                 <div>

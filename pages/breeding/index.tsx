@@ -35,6 +35,8 @@ export default function BreedingPage() {
             const data = await fetchData(getAxieBriefListQuery, {
                 from: 0,
                 auctionType: 'All',
+                size: 50,
+                sortId: 'IdDesc',
                 owner: '0xbcb5f39deac3670f8a8275941ea52b3ef6b6bb3a',
             });
 
